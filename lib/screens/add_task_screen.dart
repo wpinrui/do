@@ -54,15 +54,20 @@ class AddTaskScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 24),
-              Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.lightBlueAccent,
-                ),
-                child: Text(
-                  'Add',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                  textAlign: TextAlign.center,
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.lightBlueAccent,
+                  ),
+                  child: Text(
+                    'Add',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               )
             ],
