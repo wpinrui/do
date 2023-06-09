@@ -4,8 +4,12 @@ import '../model/task.dart';
 import 'task_tile.dart';
 
 class TasksList extends StatefulWidget {
+  final List<Task> tasks;
+  final Function checkboxCallback;
   const TasksList({
     super.key,
+    required this.tasks,
+    required this.checkboxCallback,
   });
 
   @override
@@ -13,28 +17,16 @@ class TasksList extends StatefulWidget {
 }
 
 class _TasksListState extends State<TasksList> {
-  List<Task> tasks = [
-    Task(name: 'Buy milk'),
-    Task(name: 'Buy eggs'),
-    Task(name: 'Buy bread'),
-  ];
-
-  void checkboxCallback(int index) {
-    setState(() {
-      tasks[index].toggle();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemBuilder: (context, index) {
         return TaskTile(
-          task: tasks[index],
-          checkboxCallback: () => checkboxCallback(index),
+          task: widget.tasks[index],
+          checkboxCallback: () => widget.checkboxCallback(index),
         );
       },
-      itemCount: tasks.length,
+      itemCount: widget.tasks.length,
     );
   }
 }

@@ -1,13 +1,35 @@
 import 'package:flutter/material.dart';
 
+import '../model/task.dart';
 import '../widgets/tasks_list.dart';
 import 'add_task_screen.dart';
 
-class TasksScreen extends StatelessWidget {
+class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
 
   @override
+  State<TasksScreen> createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
+  List<Task> tasks = [];
+
+  void addTask(String newTaskTitle) {
+    setState(() {
+      tasks.add(Task(name: newTaskTitle));
+    });
+  }
+
+  void checkboxCallback(int index) {
+    setState(() {
+      tasks[index].toggle();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final numTasks =
+        tasks.fold(0, (wish, task) => wish + (task.isDone ? 0 : 1));
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
       floatingActionButton: FloatingActionButton(
@@ -25,7 +47,9 @@ class TasksScreen extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: AddTaskScreen(),
+                child: AddTaskScreen(
+                  addTaskCallback: addTask,
+                ),
               ),
             ),
           );
@@ -58,7 +82,7 @@ class TasksScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 16.0),
                     Text(
-                      '12 Tasks',
+                      '$numTasks Task${numTasks == 1 ? '' : 's'}',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 24.0,
@@ -76,7 +100,10 @@ class TasksScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 45, vertical: 20),
-                    child: TasksList(),
+                    child: TasksList(
+                      tasks: tasks,
+                      checkboxCallback: checkboxCallback,
+                    ),
                   ),
                 ),
               )

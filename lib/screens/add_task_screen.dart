@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 
-class AddTaskScreen extends StatelessWidget {
-  const AddTaskScreen({super.key});
+class AddTaskScreen extends StatefulWidget {
+  final void Function(String) addTaskCallback;
+  const AddTaskScreen({super.key, required this.addTaskCallback});
 
+  @override
+  State<AddTaskScreen> createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+  String userEntry = '';
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -51,11 +58,17 @@ class AddTaskScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20,
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      userEntry = value;
+                    });
+                  },
                 ),
               ),
               SizedBox(height: 24),
               GestureDetector(
                 onTap: () {
+                  widget.addTaskCallback(userEntry);
                   Navigator.pop(context);
                 },
                 child: Container(
