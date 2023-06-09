@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
 
-class TaskTile extends StatefulWidget {
+import '../model/task.dart';
+
+class TaskTile extends StatelessWidget {
+  final Task task;
+  final Function checkboxCallback;
+
   const TaskTile({
     super.key,
+    required this.task,
+    required this.checkboxCallback,
   });
-
-  @override
-  State<TaskTile> createState() => _TaskTileState();
-}
-
-class _TaskTileState extends State<TaskTile> {
-  bool isChecked = false;
-
-  void checkboxCallback(bool? currentState) {
-    setState(() {
-      isChecked = currentState!;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,32 +20,21 @@ class _TaskTileState extends State<TaskTile> {
         Flexible(
           child: SingleChildScrollView(
             child: Text(
-              'This is an easy task.',
+              task.name,
               style: TextStyle(
                 fontSize: 20,
-                decoration: isChecked ? TextDecoration.lineThrough : null,
+                decoration: task.isDone ? TextDecoration.lineThrough : null,
               ),
             ),
           ),
         ),
-        TaskCheckbox(isChecked: isChecked, callback: checkboxCallback),
+        Checkbox(
+          value: task.isDone,
+          onChanged: (value) {
+            checkboxCallback();
+          },
+        ),
       ],
-    );
-  }
-}
-
-class TaskCheckbox extends StatelessWidget {
-  final bool isChecked;
-  final void Function(bool?) callback;
-  const TaskCheckbox(
-      {super.key, required this.isChecked, required this.callback});
-  @override
-  Widget build(BuildContext context) {
-    return Checkbox(
-      value: isChecked,
-      onChanged: (value) {
-        callback(value);
-      },
     );
   }
 }
